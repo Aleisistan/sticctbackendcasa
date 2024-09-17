@@ -1,14 +1,22 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { CreateOrdersDto } from './dto/create-orders.dto';
+import { QueryOrdersDto } from './dto/query-orders.dto';
 import { OrdersService } from './orders.service';
-import { CreateOrdersDto } from './dto/create-orders.dto/create-orders.dto';
 
 @Controller('orders')
 export class OrdersController {
     constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  findAll(@Query() query : QueryOrdersDto) {
+       // eslint-disable-next-line prefer-const
+    let priority = query.priority;
+    let sortBy = query.sortBy;
+    let orderBy = query.orderBy;
+    return this.ordersService.findAll(priority, sortBy, orderBy);
   }
   @Get(':id')
   findOne(@Param() params) {
