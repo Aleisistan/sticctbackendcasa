@@ -3,9 +3,12 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
+import { User } from './interfaces/user.interface';
+import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
+
 @Injectable()
 export class UsersService {
-   
+    
     private users = [
         {
             "id": 1,
@@ -67,12 +70,16 @@ export class UsersService {
     }
     create(CreateUsersDto: CreateUsersDto) {
         let nextId = this.users[this.users.length-1].id +1;
-        let user = {
-            "id": nextId,
-            ...CreateUsersDto
-
-        };
+        let user = new User(nextId, CreateUsersDto.name, CreateUsersDto.institute, CreateUsersDto.contact);
         this.users.push(user);
         return user;
     }
+    update(id: number, updateUserDto: UpdateUserDto): User {
+        const user = this.findOne(id);
+        user.name = updateUserDto.name;
+        user.institute = updateUserDto.institute;
+        user.contact = updateUserDto.contact;
+        return user;
+    }
+     
 }

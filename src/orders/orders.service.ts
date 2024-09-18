@@ -3,9 +3,12 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { CreateOrdersDto } from './dto/create-orders.dto';
+import { Order } from './interfaces/order.interface';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
+ 
     
     private orders = [
         {
@@ -71,13 +74,17 @@ export class OrdersService {
         create(CreateOrdersDto: CreateOrdersDto) {
             // eslint-disable-next-line prefer-const
             let nextId = this.orders[this.orders.length-1].id +1;
-            let order = {
-                "id": nextId,
-                ...CreateOrdersDto
-
-            };
+            let order = new Order(nextId, CreateOrdersDto.name, CreateOrdersDto.institute, CreateOrdersDto.contact, CreateOrdersDto.priority, CreateOrdersDto.description);
             this.orders.push(order);
             return order;
         }
-}
-
+        update(id: number, updateOrderDto: UpdateOrderDto): Order {
+            const order = this.findOne(id);
+            order.name = updateOrderDto.name;
+            order.institute = updateOrderDto.institute;
+            order.contact = updateOrderDto.contact;
+            order.priority = updateOrderDto.priority;
+            order.description = updateOrderDto.description;
+            return order;
+        }
+    }
