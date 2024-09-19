@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { QueryOrdersDto } from './dto/query-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -22,8 +22,13 @@ export class OrdersController {
   }
   @Get(':id')
   findOne(@Param() params) {
-    return this.ordersService.findOne(params.id)
-  }
+    let order = this.ordersService.findOne(params.id)
+    if(order){
+      return order;  
+    }  else {
+        throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+  }}
+  
   @Post()
   create(@Body() CreateOrdersDto: CreateOrdersDto){
     return this.ordersService.create(CreateOrdersDto);

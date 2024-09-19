@@ -92,17 +92,17 @@ else {
         return user;
     }
     update(id: number, updateUserDto: UpdateUserDto): User {
-        const user = this.findOne(id);
+        let user = this.findOne(id);
         user.name = updateUserDto.name;
         user.institute = updateUserDto.institute;
         user.contact = updateUserDto.contact;
         return user;
     }
     remove(id: number)  {
-        const user = this.findOne(id);
+        let user = this.findOne(id);
         if(!user) 
             throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-        const pos = this.users.indexOf(user)
+        let pos = this.users.indexOf(user)
         this.users.splice(pos, 1);
         
       }

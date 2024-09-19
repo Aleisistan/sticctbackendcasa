@@ -91,7 +91,7 @@ export class OrdersService {
             return order;
         }
         update(id: number, updateOrderDto: UpdateOrderDto): Order {
-            const order = this.findOne(id);
+            let order = this.findOne(id);
             order.name = updateOrderDto.name;
             order.institute = updateOrderDto.institute;
             order.contact = updateOrderDto.contact;
@@ -100,10 +100,10 @@ export class OrdersService {
             return order;
         }
         remove(id: number) {
-            const order = this.findOne(id);
+            let order = this.findOne(id);
             if(!order) 
                 throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-            const pos = this.orders.indexOf(order)
+            let pos = this.orders.indexOf(order)
             this.orders.splice(pos, 1);
                
           }

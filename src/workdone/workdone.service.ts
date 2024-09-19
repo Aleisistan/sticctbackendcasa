@@ -82,7 +82,7 @@ export class WorkdoneService {
             return workdone;
         }
         update(id: number, updateWorkdoneDto: UpdateWorkdoneDto): Workdone {
-            const workdone = this.findOne(id);
+            let workdone = this.findOne(id);
             workdone.scheduled_date = updateWorkdoneDto.scheduled_date;
             workdone.work_done = updateWorkdoneDto.work_done;
             workdone.observations = updateWorkdoneDto.observations;
@@ -91,10 +91,10 @@ export class WorkdoneService {
             return workdone;
         }
         remove(id: number) {
-            const workdone = this.findOne(id);
+            let workdone = this.findOne(id);
             if(!workdone) 
                 throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-            const pos = this.workdone.indexOf(workdone)
+            let pos = this.workdone.indexOf(workdone)
             this.workdone.splice(pos, 1);
                
           }
