@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
-import { User } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
+import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -30,7 +30,7 @@ export class UsersService {
             "contact": "laura@gmail.com"
          }
     ]; 
-    findAll(institute: string, sortBy : string, orderBy : string) {
+    findAll(institute: string, id: number, sortBy: string, orderBy: string) {
         let queryUsers = []; 
         //FILTRO POR INSTITUTO
         if(!institute){
@@ -42,6 +42,18 @@ export class UsersService {
             return user.institute.toLowerCase() == institute.toLowerCase();
 
     });
+}
+    if(!id){
+        queryUsers = this.users;
+
+}
+else {
+    queryUsers = this.users.filter(function(user){
+        return user.id == id;
+
+});
+
+
     }
     if(!sortBy){
         return queryUsers;

@@ -3,8 +3,8 @@
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateOrdersDto } from './dto/create-orders.dto';
-import { Order } from './interfaces/order.interface';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Order } from './interfaces/order.interface';
 
 @Injectable()
 export class OrdersService {
@@ -37,7 +37,7 @@ export class OrdersService {
         }
     ] ;
 
-    findAll(priority : string, sortBy : string, oderBy : string)  {
+    findAll(priority: string, id: number, sortBy: string, oderBy: number)  {
         let queryOrders = [];
         if(!priority){
             queryOrders = this.orders;
@@ -47,6 +47,18 @@ export class OrdersService {
                 return order.priority.toLowerCase() == priority.toLowerCase();
 
         });
+        if(!id){
+            queryOrders = this.orders;
+    
+    }
+    else {
+        queryOrders = this.orders.filter(function(order){
+            return order.id == id;
+    
+    });
+    
+    
+        }
         }
         if(!sortBy) {
             return queryOrders;

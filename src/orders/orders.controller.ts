@@ -4,8 +4,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { QueryOrdersDto } from './dto/query-orders.dto';
-import { OrdersService } from './orders.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { OrdersService } from './orders.service';
 
 @Controller('orders')
 export class OrdersController {
@@ -15,9 +15,10 @@ export class OrdersController {
   findAll(@Query() query : QueryOrdersDto) {
        // eslint-disable-next-line prefer-const
     let priority = query.priority;
+    let id = query.id;
     let sortBy = query.sortBy;
     let orderBy = query.orderBy;
-    return this.ordersService.findAll(priority, sortBy, orderBy);
+    return this.ordersService.findAll(priority, id, sortBy, orderBy);
   }
   @Get(':id')
   findOne(@Param() params) {
