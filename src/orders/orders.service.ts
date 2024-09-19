@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { Order } from './interfaces/order.interface';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
- 
+  
     
     private orders = [
         {
@@ -87,4 +87,14 @@ export class OrdersService {
             order.description = updateOrderDto.description;
             return order;
         }
+        remove(id: number) {
+            const order = this.findOne(id);
+            if(!order) 
+                throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+            const pos = this.orders.indexOf(order)
+            this.orders.splice(pos, 1);
+               
+          }
+    
     }
+

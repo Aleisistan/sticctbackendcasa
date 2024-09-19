@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
 import { QueryUsersDto } from './dto/create-users.dto/query-users.dto';
 import { UsersService } from './users.service';
@@ -34,5 +34,8 @@ create(@Body() CreateUsersDto: CreateUsersDto){
 update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto)   {
   return this.usersService.update(id, updateUserDto)
 }
-
+@Delete(':id')
+remove(@Param('id') id: number)  {
+  return this.usersService.remove(id);
+}
 }

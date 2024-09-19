@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { QueryOrdersDto } from './dto/query-orders.dto';
 import { OrdersService } from './orders.service';
@@ -30,7 +30,11 @@ export class OrdersController {
 
   @Put(':id')
   update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto)   {
-    return this.ordersService.update(id, updateOrderDto)
+    return this.ordersService.update(id, updateOrderDto);
   }
-  
+ 
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.ordersService.remove(id);
+  }
 }
