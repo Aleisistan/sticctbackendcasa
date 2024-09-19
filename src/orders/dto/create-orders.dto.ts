@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export class CreateOrdersDto {
     "name": string;
     "institute": string;
