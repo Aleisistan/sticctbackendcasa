@@ -2,6 +2,8 @@
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './interfaces/order.interface';
@@ -9,35 +11,44 @@ import { Order } from './interfaces/order.interface';
 @Injectable()
 export class OrdersService {
   
+    constructor(
+        @InjectRepository(Order)
+        private orderRepository: Repository<Order>
+    ) {
+
+    }
     
     private orders = [
         {
             "id": 1,
             "name": "ANA",
-            "institute": "CCT",
-            "contact": "ana@gmail.com",
+            //"institute": "CCT",
+            //"mail": "ana@gmail.com",
+            //"cel": 154565958,
             "priority": "High",
             "description": "no enciende la pc"
          },
          {
              "id": 2,
             "name": "Jose",
-            "institute": "ISISTAN",
-            "contact": "JOSE@gmail.com",
+            //"institute": "ISISTAN",
+            //"contact": "JOSE@gmail.com",
             "priority": "planned",
             "description": "ACTIVAR OFFICE"
          },
          {
             "id": 3,
            "name": "felix",
-           "institute": "otros",
-           "contact": "felix@gmail.com",
+           //"institute": "otros",
+           //"contact": "felix@gmail.com",
            "priority": "medium",
            "description": "optimizar pc"
         }
     ] ;
-
-    findAll(priority: string, id: number, sortBy: string, oderBy: number)  {
+    findAll() {
+        return this.orderRepository.find(); //HACER LO MISMO CON LOS OTROS 
+    }
+    /*findAll(priority: string, id: number, sortBy: string, oderBy: number)  {
         let queryOrders = [];
         if(!priority){
             queryOrders = this.orders;
@@ -76,25 +87,25 @@ export class OrdersService {
         })
         return orderedOrders;
     
-    }
+    }*/
     
         findOne(id: any) {
-            return this.orders.find(function(order){
+            return this.orders.find(function(order){//ID:ID PARA LA BASE
                 return order.id == id;
             });
         }
         create(CreateOrdersDto: CreateOrdersDto) {
             // eslint-disable-next-line prefer-const
             let nextId = this.orders[this.orders.length-1].id +1;
-            let order = new Order(nextId, CreateOrdersDto.name, CreateOrdersDto.institute, CreateOrdersDto.contact, CreateOrdersDto.priority, CreateOrdersDto.description);
+            let order = new Order(nextId, CreateOrdersDto.name, /*CreateOrdersDto.institute, CreateOrdersDto.contact,*/ CreateOrdersDto.priority, CreateOrdersDto.description);
             this.orders.push(order);
             return order;
         }
         update(id: number, updateOrderDto: UpdateOrderDto): Order {
             let order = this.findOne(id);
             order.name = updateOrderDto.name;
-            order.institute = updateOrderDto.institute;
-            order.contact = updateOrderDto.contact;
+           // order.institute = updateOrderDto.institute;
+            //order.contact = updateOrderDto.contact;
             order.priority = updateOrderDto.priority;
             order.description = updateOrderDto.description;
             return order;

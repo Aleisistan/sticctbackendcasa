@@ -1,10 +1,24 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Order } from './orders/entities/order.entity';
 import { OrdersModule } from './orders/orders.module';
-import { WorkdoneModule } from './workdone/workdone.module';
+import { User } from './users/entities/user.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [UsersModule, OrdersModule, WorkdoneModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 2425,
+      username: 'postgres',
+      password: 'secret123!',
+      database: 'sticct',
+      entities: [Order, User],
+      synchronize: true,
+    }),
+UsersModule, OrdersModule],
   controllers: [],
   providers: [],
 })

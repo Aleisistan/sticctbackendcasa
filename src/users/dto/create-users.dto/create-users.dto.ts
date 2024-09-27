@@ -1,5 +1,7 @@
+/* eslint-disable prettier/prettier */
 export class CreateUsersDto {
     "name": string;
     "institute": string;
-    "contact": string;
+    "mail": string;
+    "cel": number;
     }

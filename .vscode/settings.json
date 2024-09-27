@@ -1,5 +1,17 @@
 {
     "cSpell.words": [
         "Workdone"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 2425,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "sti",
+            "database": "sticct",
+            "username": "postgres"
+        }
     ]
 }

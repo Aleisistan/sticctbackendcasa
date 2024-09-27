@@ -18,7 +18,7 @@ export class OrdersController {
     let id = query.id;
     let sortBy = query.sortBy;
     let orderBy = query.orderBy;
-    return this.ordersService.findAll(priority, id, sortBy, orderBy);
+    return this.ordersService.findAll();
   }
   @Get(':id')
   findOne(@Param() params) {

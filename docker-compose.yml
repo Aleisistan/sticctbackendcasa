@@ -1,0 +1,15 @@
+version: '2'
+services:
+  postgres:
+    image: 'postgres:latest'
+    restart: always
+    volumes:
+      - './postgres_data:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_PASSWORD=secret123!
+    ports:
+      - '2425:5432'
+  adminer:
+    image: 'adminer:latest'
+    ports: 
+      - '8080:8080'     

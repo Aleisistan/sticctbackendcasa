@@ -2,12 +2,20 @@
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
 import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
 import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
+    constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>   //REVISAR OTRO POSTGRES EN PUERTO 5432
+    ) {
+
+    }
   
     
     private users = [
@@ -15,22 +23,30 @@ export class UsersService {
             "id": 1,
             "name": "Ana",
             "institute": "otros",
-            "contact": "ana@gmail.com"
+            "mail": "ana@gmail.com",
+            "cel": 154123456
          },
          {
             "id": 2,
             "name": "Juana",
             "institute": "cificen",
-            "contact": "juana@gmail.com"
+            "mail": "juana@gmail.com",
+            "cel": 154789456
          },
          {
             "id": 3,
             "name": "Laura",
             "institute": "civetan",
-            "contact": "laura@gmail.com"
+            "mail": "laura@gmail.com",
+            "cel": 154456789
+
          }
     ]; 
-    findAll(institute: string, id: number, sortBy: string, orderBy: string) {
+
+    findAll() {
+        return this.userRepository.find();
+    }
+    /*findAll(institute: string, id: number, sortBy: string, orderBy: string) {
         let queryUsers = []; 
         //FILTRO POR INSTITUTO
         if(!institute){
@@ -72,10 +88,7 @@ else {
     })
     return orderedUsers;
 
-}
- 
- 
-      
+}*/
     findOne(id: any) {
         
         //if(!id)
@@ -87,7 +100,7 @@ else {
     }
     create(CreateUsersDto: CreateUsersDto) {
         let nextId = this.users[this.users.length-1].id +1;
-        let user = new User(nextId, CreateUsersDto.name, CreateUsersDto.institute, CreateUsersDto.contact);
+        let user = new User(nextId, CreateUsersDto.name, CreateUsersDto.institute, CreateUsersDto.mail, CreateUsersDto.cel);
         this.users.push(user);
         return user;
     }
@@ -95,7 +108,8 @@ else {
         let user = this.findOne(id);
         user.name = updateUserDto.name;
         user.institute = updateUserDto.institute;
-        user.contact = updateUserDto.contact;
+        user.mail = updateUserDto.mail;
+        user.cel = updateUserDto.cel
         return user;
     }
     remove(id: number)  {

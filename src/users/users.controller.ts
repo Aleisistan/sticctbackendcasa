@@ -18,7 +18,7 @@ export class UsersController {
  let id = query.id;
  let sortBy = query.sortBy;
  let orderBy = query.orderBy;
- return this.usersService.findAll(institute, id, sortBy, orderBy);
+ return this.usersService.findAll();
 }
   @Get(':id')
   findOne(@Param() params) {

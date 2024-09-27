@@ -2,5 +2,6 @@
 export class UpdateUserDto {
     "name": string;
     "institute": string;
-    "contact": string;
+    "mail": string;
+    "cel": number;
 }
