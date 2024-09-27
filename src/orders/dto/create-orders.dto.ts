@@ -5,4 +5,9 @@ export class CreateOrdersDto {
     //"mail": string;
     "priority": string;
     "description": string;
+    "isActive": boolean;
+    "description2": string;
+    "user_id": number;
 }
+
+    

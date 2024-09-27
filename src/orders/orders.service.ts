@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateOrdersDto } from './dto/create-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './interfaces/order.interface';
 
 @Injectable()
 export class OrdersService {
+  delete(id: number): Promise<import("./entities/order.entity").Order> {
+    throw new Error('Method not implemented.');
+  }
   
     constructor(
         @InjectRepository(Order)
@@ -88,20 +90,31 @@ export class OrdersService {
         return orderedOrders;
     
     }*/
-    
-        findOne(id: any) {
+        findOne(id:any): Promise<Order> {
+            return this.orderRepository.findOneBy({id});
+        }        /*findOne(id: any) {
             return this.orders.find(function(order){//ID:ID PARA LA BASE
                 return order.id == id;
             });
-        }
-        create(CreateOrdersDto: CreateOrdersDto) {
+        }*/
+       async create(any): Promise<Order> {
+        return this.orderRepository.create();
+
+       }
+        /*create(CreateOrdersDto: CreateOrdersDto) {
             // eslint-disable-next-line prefer-const
             let nextId = this.orders[this.orders.length-1].id +1;
-            let order = new Order(nextId, CreateOrdersDto.name, /*CreateOrdersDto.institute, CreateOrdersDto.contact,*/ CreateOrdersDto.priority, CreateOrdersDto.description);
+            let order = new Order(nextId, CreateOrdersDto.name,*/ /*CreateOrdersDto.institute, CreateOrdersDto.contact,*//* CreateOrdersDto.priority, CreateOrdersDto.description);
             this.orders.push(order);
             return order;
-        }
-        update(id: number, updateOrderDto: UpdateOrderDto): Order {
+        }*/
+       async update(id: number, updateOrderDto: UpdateOrderDto): Promise<Order> {
+         await this.orderRepository.update(id, updateOrderDto);
+         return this.orderRepository.findOne({where:{id}});
+
+
+       }
+        /*update(id: number, updateOrderDto: UpdateOrderDto): Order {
             let order = this.findOne(id);
             order.name = updateOrderDto.name;
            // order.institute = updateOrderDto.institute;
@@ -109,15 +122,18 @@ export class OrdersService {
             order.priority = updateOrderDto.priority;
             order.description = updateOrderDto.description;
             return order;
-        }
-        remove(id: number) {
+        }*/
+       async remove(id: number): Promise<void> { //"ESTEFUNCIONA"
+        await this.orderRepository.delete(id);
+       }
+        /*remove(id: number) {
             let order = this.findOne(id);
             if(!order) 
                 throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
             let pos = this.orders.indexOf(order)
             this.orders.splice(pos, 1);
                
-          }
+          }*/
     
     }
 

@@ -5,6 +5,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
 import { QueryUsersDto } from './dto/create-users.dto/query-users.dto';
 import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
+import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -27,14 +28,18 @@ export class UsersController {
 
 @Post()
 create(@Body() CreateUsersDto: CreateUsersDto){
-    return this.usersService.create(CreateUsersDto);
+    return this.usersService.create();
 }
 
 @Put(':id')
-update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto)   {
-  return this.usersService.update(id, updateUserDto)
+update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<User>   {
+  this.usersService.update(id, updateUserDto);
+  return;
+ 
 }
-@Delete(':id')
+
+
+@Delete(':id') //FUNCIONA ESTE
 remove(@Param('id') id: number)  {
   return this.usersService.remove(id);
 }

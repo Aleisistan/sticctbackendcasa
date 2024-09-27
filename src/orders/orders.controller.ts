@@ -5,10 +5,12 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { QueryOrdersDto } from './dto/query-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Order } from './entities/order.entity';
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
 export class OrdersController {
+  orderRepository: any;
     constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
@@ -30,17 +32,21 @@ export class OrdersController {
   }}
   
   @Post()
-  create(@Body() CreateOrdersDto: CreateOrdersDto){
-    return this.ordersService.create(CreateOrdersDto);
+ async create(@Body() CreateOrdersDto: CreateOrdersDto): Promise<Order>{
+    await this.ordersService.create(Order);
+    return;
+     
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto)   {
-    return this.ordersService.update(id, updateOrderDto);
+  async update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto): Promise<Order>   {
+    this.ordersService.update(id, updateOrderDto)
+    return;
   }
  
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.ordersService.remove(id);
+  @Delete(':id') //"ESTE FUNCIONA"
+  remove(@Param('id') id: number): Promise<Order> {
+    this.ordersService.remove(id);
+    return;
   }
 }

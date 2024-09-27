@@ -13,7 +13,7 @@ export class User {
     @Column()
     private institute: string;
     
-    @Column({nullable:true })
+    @Column({nullable:true })//Lo puse asi porque me tiraba el error que estaba vacia
     private mail: string; //CEL MAIL 
 
     @Column({nullable:true })

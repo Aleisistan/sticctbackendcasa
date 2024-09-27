@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
 import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
 import { User } from './interfaces/user.interface';
 
@@ -89,7 +88,10 @@ else {
     return orderedUsers;
 
 }*/
-    findOne(id: any) {
+    findOne(id:any): Promise<User> {
+        return this.userRepository.findOneBy({id});
+    }        /*findOne(id: any) {
+    /*findOne(id: any) {
         
         //if(!id)
           //  throw new HttpException('Not Found', HttpStatus.NOT_FOUND);// SE ME CIERRA LA APLICACION ERROR 500 INTERNAL SERVER ERROR
@@ -97,13 +99,22 @@ else {
         return this.users.find(function(user){
         return user.id == id;
         });
+    }*/
+    async create(): Promise<User> {
+        return this.userRepository.create();
     }
+    /*
     create(CreateUsersDto: CreateUsersDto) {
         let nextId = this.users[this.users.length-1].id +1;
         let user = new User(nextId, CreateUsersDto.name, CreateUsersDto.institute, CreateUsersDto.mail, CreateUsersDto.cel);
         this.users.push(user);
         return user;
+    }*/
+    async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+        await this.userRepository.update(id, updateUserDto);
+        return this.userRepository.findOne({where:{id}});
     }
+   /*
     update(id: number, updateUserDto: UpdateUserDto): User {
         let user = this.findOne(id);
         user.name = updateUserDto.name;
@@ -111,7 +122,11 @@ else {
         user.mail = updateUserDto.mail;
         user.cel = updateUserDto.cel
         return user;
-    }
+    }*/
+    async remove(id: number): Promise<void> { //FUNCIONA ESTE
+        await this.userRepository.delete(id);
+           }
+   /*
     remove(id: number)  {
         let user = this.findOne(id);
         if(!user) 
@@ -119,5 +134,5 @@ else {
         let pos = this.users.indexOf(user)
         this.users.splice(pos, 1);
         
-      }
+      }*/
 }
