@@ -10,6 +10,8 @@ import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
+    usersRepository: any;
+    ordersRepository: any;
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>   //REVISAR OTRO POSTGRES EN PUERTO 5432
@@ -71,6 +73,30 @@ export class UsersService {
                     },
             });
           }
+    // Método para obtener un usuario y contar cuántas órdenes tiene
+  async findUserWithOrderCount(userId: number): Promise<{ user: User; orderCount: number }> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['orders'], // Cargar las órdenes relacionadas
+    });
+
+    const orderCount = await this.ordersRepository.count({
+      where: { user: { id: userId } },
+    });
+
+    return { user, orderCount };
+  }
+
+  // Método para obtener todos los usuarios con la cantidad de órdenes
+  async findAllUsersWithOrderCount(): Promise<{ user: User; orderCount: number }[]> {
+    const users = await this.usersRepository.find({ relations: ['orders'] });
+
+    // Para cada usuario, contar sus órdenes
+    return users.map(user => ({
+      user,
+      orderCount: user.orders.length,
+    }));
+  }      
     /*findAll(institute: string, id: number, sortBy: string, orderBy: string) {
         let queryUsers = []; 
         //FILTRO POR INSTITUTO

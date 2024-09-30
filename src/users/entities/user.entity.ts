@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from "src/orders/entities/order.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -22,4 +24,6 @@ export class User {
     @Column({ default: true })
     isActive: boolean;
     
+    @OneToMany(type => Order, Order => Order.user)
+    orders: Order[];
 }

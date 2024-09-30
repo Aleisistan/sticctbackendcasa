@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Order {
@@ -29,5 +30,8 @@ export class Order {
 
     @Column({ default: true })
     isActive: boolean;
+    
+    @ManyToOne(() => User, User => User.orders)
+    user: User;
     
 } 

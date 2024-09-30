@@ -25,7 +25,22 @@ export class UsersController {
   findOne(@Param() params) {
     return this.usersService.findOne(params.id)
   }
+ // Obtener el número de órdenes para un usuario específico
+ @Get(':id/orders-count')
+ async getUserOrderCount(@Param('id') id: number) {
+   const result = await this.usersService.findUserWithOrderCount(id);
+   return {
+     user: result.user,
+     orderCount: result.orderCount,
+   };
+ }
 
+ // Obtener todos los usuarios con la cantidad de órdenes
+ @Get()
+ async getAllUsersWithOrderCount() {
+   return this.usersService.findAllUsersWithOrderCount();
+ }
+ 
 @Post()
 async create(@Body() CreateUsersDto: CreateUsersDto): Promise<User>{
     await this.usersService.create(CreateUsersDto);
