@@ -3,14 +3,14 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './interfaces/order.interface';
 
 @Injectable()
 export class OrdersService {
-  delete(id: number): Promise<import("./entities/order.entity").Order> {
+  delete(_id: number): Promise<import("./entities/order.entity").Order> {
     throw new Error('Method not implemented.');
   }
   
@@ -48,9 +48,72 @@ export class OrdersService {
            "description": "optimizar pc"
         }
     ] ;
-    findAll() {
-        return this.orderRepository.find(); //HACER LO MISMO CON LOS OTROS 
+    async findAll(filters: { priority?: string; id?: number; sortBy?: string; orderBy?: number },
+        orderField: string = 'priority',
+        orderDirection: 'ASC' | 'DESC' = 'ASC',
+        
+        ): Promise<Order[]> {
+            const whereConditions: any ={};
+        
+            if (filters.priority) {
+              whereConditions.priority = Like(`%${filters.priority}%`);
+            }
+        
+            if (filters.id) {
+              whereConditions.id = Like (`%${filters.id}%`);
+            }
+            /*if (filters.sortBy) {
+                whereConditions.sortBy = Like(`%${filters.sortBy}%`);
+            } 
+            if (filters.orderBy) {
+                whereConditions.oderBy = Like(`%${filters.orderBy}%`);
+              }*/
+        
+            return this.orderRepository.find({
+                where: whereConditions,
+                order: {
+                    [orderField]: orderDirection,
+                    },
+            });
+          }
+        /*let queryOrders = [];
+        if(!priority){
+            queryOrders = this.orders;
+        }
+        else {
+            queryOrders = this.orders.filter(function(order){
+                return order.priority.toLowerCase() == priority.toLowerCase();
+
+        });
+        if(!id){
+            queryOrders = this.orders;
+    
     }
+    else {
+        queryOrders = this.orders.filter(function(order){
+            return order.id == id;
+    
+    });
+    
+    
+        }
+        }
+        if(!sortBy) {
+            return queryOrders;
+        }
+        let orderedOrders = queryOrders.sort(function(a, b) {
+            let OrdenarA = a[sortBy];
+            let OrdenarB = b[sortBy];
+            if(OrdenarA < OrdenarB) {
+                return -1;
+            }
+            if(OrdenarA == OrdenarB){
+                return 0;
+            }
+            return 1;
+        })*/
+       // return this.orderRepository.find(); //HACER LO MISMO CON LOS OTROS 
+    //}
     /*findAll(priority: string, id: number, sortBy: string, oderBy: number)  {
         let queryOrders = [];
         if(!priority){

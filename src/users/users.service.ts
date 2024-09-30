@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
 import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
 import { User } from './interfaces/user.interface';
@@ -43,9 +43,34 @@ export class UsersService {
          }
     ]; 
 
-    findAll() {
-        return this.userRepository.find();
-    }
+    async findAll(filters: { institute?: string; id?: number; sortBy?: string; orderBy?: number },
+        orderField: string = 'institute', //ORDENO POR INSTITUTE
+        orderDirection: 'ASC' | 'DESC' = 'ASC',
+        
+        ): Promise<User[]> {
+            const whereConditions: any ={};
+        
+            if (filters.institute) {
+              whereConditions.priority = Like(`%${filters.institute}%`);
+            }
+        
+            if (filters.id) {
+              whereConditions.id = Like (`%${filters.id}%`);
+            }
+            /*if (filters.sortBy) {
+                whereConditions.sortBy = Like(`%${filters.sortBy}%`);
+            } 
+            if (filters.orderBy) {
+                whereConditions.oderBy = Like(`%${filters.orderBy}%`);
+              }*/
+        
+            return this.userRepository.find({
+                where: whereConditions,
+                order: {
+                    [orderField]: orderDirection,
+                    },
+            });
+          }
     /*findAll(institute: string, id: number, sortBy: string, orderBy: string) {
         let queryUsers = []; 
         //FILTRO POR INSTITUTO
