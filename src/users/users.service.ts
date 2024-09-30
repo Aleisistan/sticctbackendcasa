@@ -4,6 +4,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
 import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
 import { User } from './interfaces/user.interface';
 
@@ -100,8 +101,9 @@ else {
         return user.id == id;
         });
     }*/
-    async create(): Promise<User> {
-        return this.userRepository.create();
+    async create(CreateUsersDto: CreateUsersDto): Promise<User> {
+        const newUser = this.userRepository.create(CreateUsersDto);
+        return await this.userRepository.save(newUser);
     }
     /*
     create(CreateUsersDto: CreateUsersDto) {

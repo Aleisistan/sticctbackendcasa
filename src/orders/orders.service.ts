@@ -4,6 +4,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateOrdersDto } from './dto/create-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './interfaces/order.interface';
 
@@ -97,8 +98,11 @@ export class OrdersService {
                 return order.id == id;
             });
         }*/
-       async create(any): Promise<Order> {
-        return this.orderRepository.create();
+       async create(createOrderDto: CreateOrdersDto): Promise<Order> {
+         const newOrder = this.orderRepository.create(createOrderDto);
+         return await this.orderRepository.save(newOrder);
+         
+        
 
        }
         /*create(CreateOrdersDto: CreateOrdersDto) {

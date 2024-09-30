@@ -33,7 +33,7 @@ export class OrdersController {
   
   @Post()
  async create(@Body() CreateOrdersDto: CreateOrdersDto): Promise<Order>{
-    await this.ordersService.create(Order);
+    await this.ordersService.create(CreateOrdersDto);
     return;
      
   }
