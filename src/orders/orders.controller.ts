@@ -30,11 +30,28 @@ export class OrdersController {
     }  else {
         throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }}
+  @Get()
+  async getOrders(): Promise<Order[]>{
+    return this.ordersService.getOrdersWithUsers();
   
+    
+    
+  }
+  @Get('user/:userId')
+  async getOrdersByUser(@Param('userId') userId: number): Promise<Order[]> {
+    //console.log('controller: recibe request for userId:', userId); //Depura para ver si el controlador recibe la solicitud
+    return this.ordersService.getOrdersByUserId(userId);
+    //console.log('controller: regresando orders:' , orders);  // Verifica si el controlador recibe las órdenes
+    
+
+
+}  
+
   @Post()
  async create(@Body() CreateOrdersDto: CreateOrdersDto): Promise<Order>{
-    await this.ordersService.create(CreateOrdersDto);
+    this.ordersService.create(CreateOrdersDto);
     return;
+    
      
   }
 
@@ -42,11 +59,13 @@ export class OrdersController {
   async update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto): Promise<Order>   {
     this.ordersService.update(id, updateOrderDto)
     return;
+    
   }
  
   @Delete(':id') //"ESTE FUNCIONA"
   remove(@Param('id') id: number): Promise<Order> {
     this.ordersService.remove(id);
     return;
+    
   }
 }

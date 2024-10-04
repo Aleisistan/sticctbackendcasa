@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { CreateOrdersDto } from './dto/create-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -10,16 +11,20 @@ import { Order } from './interfaces/order.interface';
 
 @Injectable()
 export class OrdersService {
+ 
   delete(_id: number): Promise<import("./entities/order.entity").Order> {
     throw new Error('Method not implemented.');
   }
   
     constructor(
         @InjectRepository(Order)
-        private orderRepository: Repository<Order>
-    ) {
-
-    }
+        private orderRepository: Repository<Order>,
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
+    
+    
+    
+    ) { }
     
     private orders = [
         {
@@ -76,6 +81,48 @@ export class OrdersService {
                     },
             });
           }
+    async getOrdersWithUsers(): Promise<Order[]> {
+            return await this.orderRepository.find(/*{relations: ['user'],
+            }*/);
+            }
+    async getOrdersByUserId(userId: number): Promise<Order[]> {
+        //console.log('Obteniendo pedidos para userId:', userId ); ERA PARA VER QUE
+          // Inicia el QueryBuilder
+         //const orders = await this.orderRepository
+         //const query = this.orderRepository
+          return await this.orderRepository 
+            .createQueryBuilder('order')
+            .leftJoinAndSelect('order.user', 'user')  // Realiza el LEFT JOIN con la tabla 'user'
+            .where('user.id = :userId', { userId }) // Filtra por userId
+            .getMany();
+            }
+
+// Imprime el SQL generado por el QueryBuilder
+       // if (orders.length === 0) {
+         //   throw new NotFoundException('No orders found for user whit ID ${userId}');
+           //console.log('Generated SQL query:', query.getSql());
+        //return orders;
+// Ejecuta la consulta y almacena el resultado
+          //  const completeOrders = orders.map(order => ({
+            //    ...order,
+              //  user: order.user || null,
+                //description2: order.description2 || '',
+                //isActive: order.isActive || false}));
+            
+          //      return completeOrders;
+// Imprime el resultado de la consulta
+
+          
+           
+     /*   return await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.user', 'user')
+        .where('user.id = :userId', { userId })
+        .getMany();*/
+        
+    
+              
+          
         /*let queryOrders = [];
         if(!priority){
             queryOrders = this.orders;
@@ -161,13 +208,36 @@ export class OrdersService {
                 return order.id == id;
             });
         }*/
-       async create(createOrderDto: CreateOrdersDto): Promise<Order> {
-         const newOrder = this.orderRepository.create(createOrderDto);
-         return await this.orderRepository.save(newOrder);
-         
-        
+    async create(createOrderDto: CreateOrdersDto): Promise<Order> {
+         // Busca el usuario en la base de datos utilizando el userId
+        const user = await this.userRepository.findOne({ where: { id: createOrderDto.userId } });
 
-       }
+        if (!user) {
+        throw new NotFoundException(`User with ID ${createOrderDto.userId} not found`);
+        }
+        // Validar si el nombre proporcionado coincide con el nombre del usuario en la base de datos
+        if (user.name !== createOrderDto.name) {
+            throw new BadRequestException(`The name provided (${createOrderDto.name}) does not match the user with ID ${createOrderDto.userId}`);
+        }
+        
+     // Crea una nueva instancia de Order y asigna sus propiedades
+     const newOrder = new Order();
+     newOrder.name = createOrderDto.name;
+     newOrder.priority = createOrderDto.priority;
+     newOrder.description = createOrderDto.description;
+     newOrder.description2 = createOrderDto.description2;
+     newOrder.isActive = createOrderDto.isActive;
+ 
+           // Asigna la relación entre la orden y el usuario
+     newOrder.user = user;  // Vincula el usuario a la orden
+ 
+     // Guarda la nueva orden en la base de datos
+     return await this.orderRepository.save(newOrder);
+   }    
+       // const newOrder = this.orderRepository.create(createOrderDto);
+        // return await this.orderRepository.save(newOrder);
+         
+   
         /*create(CreateOrdersDto: CreateOrdersDto) {
             // eslint-disable-next-line prefer-const
             let nextId = this.orders[this.orders.length-1].id +1;

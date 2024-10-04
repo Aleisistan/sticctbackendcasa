@@ -7,23 +7,27 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    private id:number;
+    public id:number;
+
+   // @Column()
+    //userId:number;
 
     @Column()
-    private name: string;
+    public name: string;
 
     @Column()
-    private institute: string;
+    public institute: string;
     
     @Column({nullable:true })//Lo puse asi porque me tiraba el error que estaba vacia
-    private mail: string; //CEL MAIL 
+    public mail: string; //CEL MAIL 
 
     @Column({nullable:true })
-    private cel: number;
+    public cel: number;
 
     @Column({ default: true })
-    isActive: boolean;
+    public isActive: boolean;
     
-    @OneToMany(type => Order, Order => Order.user)
+    @OneToMany(() => Order, (order) => order.user)
     orders: Order[];
+    
 }

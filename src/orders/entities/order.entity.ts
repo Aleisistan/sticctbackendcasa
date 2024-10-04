@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
@@ -5,14 +6,15 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Order {
     @PrimaryGeneratedColumn()
-    private id:number;
-
-    @Column({nullable:true })
-    private user_id: number;
-
+    public id:number;
+    
+    //@Column()
+    //public userId: number;
+    
     @Column()
-    private name: string;
+    public name: string;
 
+    
    // @Column()
     //private institute: string;//SACAR DE ACA
     
@@ -20,18 +22,20 @@ export class Order {
     //private contact: string;//id usuario
 
     @Column()
-    private priority: string;
+    public priority: string;
     
     @Column()
-    private description: string;
+    public description: string;
 
     @Column()
-    private description2: string;
+    public description2: string;
 
     @Column({ default: true })
-    isActive: boolean;
+    public isActive?: boolean;
     
-    @ManyToOne(() => User, User => User.orders)
+    @ManyToOne(() => User, (user) => user.orders, { nullable:false})
     user: User;
+   
     
+   
 } 
