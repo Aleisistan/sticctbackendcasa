@@ -18,9 +18,9 @@ export class OrdersService {
   
     constructor(
         @InjectRepository(Order)
-        private orderRepository: Repository<Order>,
+        private readonly orderRepository: Repository<Order>,
         @InjectRepository(User)
-        private userRepository: Repository<User>,
+        private readonly userRepository: Repository<User>,
     
     
     
@@ -208,8 +208,8 @@ export class OrdersService {
                 return order.id == id;
             });
         }*/
-    async create(createOrderDto: CreateOrdersDto): Promise<Order> {
-         // Busca el usuario en la base de datos utilizando el userId
+    async create(createOrderDto: CreateOrdersDto): Promise<Order | { error:string }> {
+         try {// Busca el usuario en la base de datos utilizando el userId
         const user = await this.userRepository.findOne({ where: { id: createOrderDto.userId } });
 
         if (!user) {
@@ -233,8 +233,11 @@ export class OrdersService {
  
      // Guarda la nueva orden en la base de datos
      return await this.orderRepository.save(newOrder);
-   }    
-       // const newOrder = this.orderRepository.create(createOrderDto);
+   }    catch (error) {
+    console.error('error al crear la orden:', error.message);
+    throw error;
+   }
+   }   // const newOrder = this.orderRepository.create(createOrderDto);
         // return await this.orderRepository.save(newOrder);
          
    
