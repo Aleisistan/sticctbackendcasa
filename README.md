@@ -22,7 +22,41 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+
 ## Description
+API REST 
+https://sti-cct-tandil.onrender.com
+
+Endpoints:
+ORDERS
+1. GET /orders
+	Returns all Orders with Users
+2. GET /orders/user/id
+	Returns Orders of an ID User
+3. GET /orders?orderField=priority&orderDirection=ASC 
+Returns Orders ordered by priority in ascendent mode.
+4. GET /orders/id
+	Returns an Order by ID with User.
+5. POST /orders
+Creates a new Order. { userId, name, priority, description, description2, isActive}
+6. PUT /orders/id
+Updates an Order by ID. {name, priority, description, description2}
+7. DELETE /orders/id
+Deletes an Order by ID.
+
+USERS
+1. GET /users 
+Returns all Users.
+2. GET /users/id
+Returns an User by id.
+3. GET /users?orderField=institute&orderDirection=ASC  
+Returns all Users ordered by institute in ascedent mode
+4. POST /users
+Creates a new User. { name, institute, mail, cel, isActive }
+   5. PUT /users/id
+Updates an User by ID.{name, institute, mail, celphone}
+6. DELETE /users/id
+ Deletes a user by ID.
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
