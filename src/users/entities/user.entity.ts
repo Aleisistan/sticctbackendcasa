@@ -25,7 +25,7 @@ export class User {
     public cel: number;
 
     @Column({ default: true })
-    public isActive: boolean;
+    public  isActive: boolean;
     
     @OneToMany(() => Order, (order) => order.user)
     orders: Order[];
