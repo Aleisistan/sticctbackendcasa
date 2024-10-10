@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Order {
@@ -33,7 +33,8 @@ export class Order {
     @Column({ default: true })
     public isActive?: boolean;
     
-    @ManyToOne(() => User, (user) => user.orders, { nullable:false})
+    @ManyToOne(() => User) //(user) => user.orders, { nullable:false})
+    @JoinColumn({name:'id_user'})
     user: User;
    
     

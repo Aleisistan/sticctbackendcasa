@@ -1,9 +1,8 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { CreateOrdersDto } from './dto/create-orders.dto';
-import { QueryOrdersDto } from './dto/query-orders.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
 import { OrdersService } from './orders.service';
@@ -13,7 +12,7 @@ export class OrdersController {
   orderRepository: any;
     constructor(private readonly ordersService: OrdersService) {}
 
-  @Get()
+  /*@Get()
   findAll(@Query() query : QueryOrdersDto) {
        // eslint-disable-next-line prefer-const
     let priority = query.priority;
@@ -21,7 +20,7 @@ export class OrdersController {
     let sortBy = query.sortBy;
     let orderBy = query.orderBy;
     return this.ordersService.findAll({});
-  }
+  }*/
   @Get(':id')
   findOne(@Param() params) {
     let order = this.ordersService.findOne(params.id)
@@ -37,16 +36,7 @@ export class OrdersController {
     
     
   }
-  @Get('user/:userId')
-  async getOrdersByUser(@Param('userId') userId: number): Promise<Order[]> {
-    //console.log('controller: recibe request for userId:', userId); //Depura para ver si el controlador recibe la solicitud
-    return this.ordersService.getOrdersByUserId(userId);
-    //console.log('controller: regresando orders:' , orders);  // Verifica si el controlador recibe las órdenes
-    
-
-
-}  
-
+  
   @Post()
  async create(@Body() CreateOrdersDto: CreateOrdersDto): Promise<Order>{
   const result = await this.ordersService.create(CreateOrdersDto);

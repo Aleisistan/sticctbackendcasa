@@ -67,12 +67,7 @@ export class OrdersService {
             if (filters.id) {
               whereConditions.id = Like (`%${filters.id}%`);
             }
-            /*if (filters.sortBy) {
-                whereConditions.sortBy = Like(`%${filters.sortBy}%`);
-            } 
-            if (filters.orderBy) {
-                whereConditions.oderBy = Like(`%${filters.orderBy}%`);
-              }*/
+          
         
             return this.orderRepository.find({
                 where: whereConditions,
@@ -82,14 +77,11 @@ export class OrdersService {
             });
           }
     async getOrdersWithUsers(): Promise<Order[]> {
-            return await this.orderRepository.find(/*{relations: ['user'],
-            }*/);
+            return await this.orderRepository.find({relations: ['user'], loadRelationIds:true 
+            });
             }
     async getOrdersByUserId(userId: number): Promise<Order[]> {
-        //console.log('Obteniendo pedidos para userId:', userId ); ERA PARA VER QUE
-          // Inicia el QueryBuilder
-         //const orders = await this.orderRepository
-         //const query = this.orderRepository
+        
           return await this.orderRepository 
             .createQueryBuilder('order')
             .leftJoinAndSelect('order.user', 'user')  // Realiza el LEFT JOIN con la tabla 'user'
@@ -97,117 +89,10 @@ export class OrdersService {
             .getMany();
             }
 
-// Imprime el SQL generado por el QueryBuilder
-       // if (orders.length === 0) {
-         //   throw new NotFoundException('No orders found for user whit ID ${userId}');
-           //console.log('Generated SQL query:', query.getSql());
-        //return orders;
-// Ejecuta la consulta y almacena el resultado
-          //  const completeOrders = orders.map(order => ({
-            //    ...order,
-              //  user: order.user || null,
-                //description2: order.description2 || '',
-                //isActive: order.isActive || false}));
-            
-          //      return completeOrders;
-// Imprime el resultado de la consulta
 
-          
-           
-     /*   return await this.orderRepository
-        .createQueryBuilder('order')
-        .leftJoinAndSelect('order.user', 'user')
-        .where('user.id = :userId', { userId })
-        .getMany();*/
-        
-    
-              
-          
-        /*let queryOrders = [];
-        if(!priority){
-            queryOrders = this.orders;
-        }
-        else {
-            queryOrders = this.orders.filter(function(order){
-                return order.priority.toLowerCase() == priority.toLowerCase();
-
-        });
-        if(!id){
-            queryOrders = this.orders;
-    
-    }
-    else {
-        queryOrders = this.orders.filter(function(order){
-            return order.id == id;
-    
-    });
-    
-    
-        }
-        }
-        if(!sortBy) {
-            return queryOrders;
-        }
-        let orderedOrders = queryOrders.sort(function(a, b) {
-            let OrdenarA = a[sortBy];
-            let OrdenarB = b[sortBy];
-            if(OrdenarA < OrdenarB) {
-                return -1;
-            }
-            if(OrdenarA == OrdenarB){
-                return 0;
-            }
-            return 1;
-        })*/
-       // return this.orderRepository.find(); //HACER LO MISMO CON LOS OTROS 
-    //}
-    /*findAll(priority: string, id: number, sortBy: string, oderBy: number)  {
-        let queryOrders = [];
-        if(!priority){
-            queryOrders = this.orders;
-        }
-        else {
-            queryOrders = this.orders.filter(function(order){
-                return order.priority.toLowerCase() == priority.toLowerCase();
-
-        });
-        if(!id){
-            queryOrders = this.orders;
-    
-    }
-    else {
-        queryOrders = this.orders.filter(function(order){
-            return order.id == id;
-    
-    });
-    
-    
-        }
-        }
-        if(!sortBy) {
-            return queryOrders;
-        }
-        let orderedOrders = queryOrders.sort(function(a, b) {
-            let OrdenarA = a[sortBy];
-            let OrdenarB = b[sortBy];
-            if(OrdenarA < OrdenarB) {
-                return -1;
-            }
-            if(OrdenarA == OrdenarB){
-                return 0;
-            }
-            return 1;
-        })
-        return orderedOrders;
-    
-    }*/
         findOne(id:any): Promise<Order> {
-            return this.orderRepository.findOneBy({id});
-        }        /*findOne(id: any) {
-            return this.orders.find(function(order){//ID:ID PARA LA BASE
-                return order.id == id;
-            });
-        }*/
+            return this.orderRepository.findOne({ where: {id}, relations:{user:true}});
+        }     
     async create(createOrderDto: CreateOrdersDto): Promise<Order | { error:string }> {
          try {// Busca el usuario en la base de datos utilizando el userId
         const user = await this.userRepository.findOne({ where: { id: createOrderDto.userId } });
