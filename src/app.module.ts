@@ -9,14 +9,15 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-    type: 'postgres',
-     host: 'localhost',
-     port: 2425,
-     username: 'postgres',
-     password: 'secret123!',
-     database: 'sticct',
-      entities: [Order, User],
-      synchronize: true,
+    type: process.env.DB_TYPE as 'postgres', //type: 'postgres',
+    host: process.env.DB_HOST, //host: 'localhost',
+    port: parseInt(process.env.DB_PORT, 10), //port: 2425,
+    username: process.env.DB_USERNAME, //username: 'postgres',
+    password: process.env.DB_PASSWORD, //password: 'secret123!',
+    database: process.env.DB_DATABASE,//database: 'sticct',
+    ssl: process.env.TYPEORM_SSL === 'true',
+    entities: [Order, User],
+    synchronize: true,
     }),
 UsersModule, OrdersModule],
   controllers: [],
