@@ -15,7 +15,7 @@ import { UsersModule } from './users/users.module';
     username: process.env.DB_USERNAME, //username: 'postgres',
     password: process.env.DB_PASSWORD, //password: 'secret123!',
     database: process.env.DB_DATABASE,//database: 'sticct',
-    ssl: process.env.TYPEORM_SSL === 'true',
+    //ssl: process.env.TYPEORM_SSL === 'true',
     entities: [Order, User],
     synchronize: true,
     }),
