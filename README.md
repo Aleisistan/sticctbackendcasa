@@ -35,7 +35,7 @@ ORDERS
 2. GET /orders/user/id
         Returns Orders of an ID User
 
-3. GET /orders?orderField=priority&orderDirection=ASC 
+3. GET /orders?orderField=priority&orderDirection=ASC //ACA DEBE QUEDAR ORDERS/PRIORITY
 Returns Orders ordered by priority in ascendent mode.
 
 4. GET /orders/id
@@ -55,10 +55,10 @@ USERS
 1. GET /users 
 Returns all Users.
 
-2. GET /users/id
+2. GET /users/id  //ACA FALTA RELACIONAR CADA USER CON TODAS LAS ORDENES
 Returns an User by id.
 
-3. GET /users?orderField=institute&orderDirection=ASC  
+3. GET /users?orderField=institute&orderDirection=ASC  //ACA DEBE QUEDAR USERS/INSTITUTE
 Returns all Users ordered by institute in ascedent mode
 
 4. POST /users
@@ -67,7 +67,7 @@ Creates a new User. { name, institute, mail, cel, isActive }
 5. PUT /users/id
 Updates an User by ID.{name, institute, mail, celphone}
 
-6. DELETE /users/id
+6. DELETE /users/id  //FALTA BORRAR USUARIO SIN QUE TIRE ERROR DE CLAVE FORANEA CON ORDERS
  Deletes a user by ID.
 
 
