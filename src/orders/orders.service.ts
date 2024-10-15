@@ -26,49 +26,17 @@ export class OrdersService {
     
     ) { }
     
-    private orders = [
-        {
-            "id": 1,
-            "name": "ANA",
-            //"institute": "CCT",
-            //"mail": "ana@gmail.com",
-            //"cel": 154565958,
-            "priority": "High",
-            "description": "no enciende la pc"
-         },
-         {
-             "id": 2,
-            "name": "Jose",
-            //"institute": "ISISTAN",
-            //"contact": "JOSE@gmail.com",
-            "priority": "planned",
-            "description": "ACTIVAR OFFICE"
-         },
-         {
-            "id": 3,
-           "name": "felix",
-           //"institute": "otros",
-           //"contact": "felix@gmail.com",
-           "priority": "medium",
-           "description": "optimizar pc"
-        }
-    ] ;
     async findAll(filters: { priority?: string; id?: number; sortBy?: string; orderBy?: number },
         orderField: string = 'priority',
         orderDirection: 'ASC' | 'DESC' = 'ASC',
-        
-        ): Promise<Order[]> {
+          ): Promise<Order[]> {
             const whereConditions: any ={};
-        
             if (filters.priority) {
               whereConditions.priority = Like(`%${filters.priority}%`);
             }
-        
             if (filters.id) {
               whereConditions.id = Like (`%${filters.id}%`);
             }
-          
-        
             return this.orderRepository.find({
                 where: whereConditions,
                 order: {
@@ -81,17 +49,29 @@ export class OrdersService {
             });
             }
     async getOrdersByUserId(userId: number): Promise<Order[]> {
-        
-          return await this.orderRepository 
+        return await this.orderRepository 
             .createQueryBuilder('order')
             .leftJoinAndSelect('order.user', 'user')  // Realiza el LEFT JOIN con la tabla 'user'
             .where('user.id = :userId', { userId }) // Filtra por userId
+            .orderBy('order.priority', 'ASC')
             .getMany();
-            }
-
-
-        findOne(id:any): Promise<Order> {
-            return this.orderRepository.findOne({ where: {id}, relations:{user:true}});
+        }
+    async findOrdersByPriority(priority: string): Promise<Order[]> {
+        return this.orderRepository
+          .createQueryBuilder('order')
+          .where('LOWER(order.priority) LIKE LOWER(:priority)', { priority: `%${priority}%` }) // Filtro insensible a mayúsculas
+          .orderBy('order.priority', 'ASC')  // Ordenar por prioridad ascendente
+          .getMany();
+          
+      //const whereCondition = { priority: Like(`%${priority.toLowerCase()}%`)};
+        //return this.orderRepository.find({
+         // where: whereCondition,
+          //order: { priority: 'ASC',
+        //},
+      //});
+      }
+    findOne(id: number): Promise<Order> {
+            return this.orderRepository.findOne({ where: {id}, relations:['user']});
         }     
     async create(createOrderDto: CreateOrdersDto): Promise<Order | { error:string }> {
          try {// Busca el usuario en la base de datos utilizando el userId
@@ -106,59 +86,29 @@ export class OrdersService {
         }
         
      // Crea una nueva instancia de Order y asigna sus propiedades
-     const newOrder = new Order();
-     newOrder.name = createOrderDto.name;
-     newOrder.priority = createOrderDto.priority;
-     newOrder.description = createOrderDto.description;
-     newOrder.description2 = createOrderDto.description2;
-     newOrder.isActive = createOrderDto.isActive;
- 
-           // Asigna la relación entre la orden y el usuario
-     newOrder.user = user;  // Vincula el usuario a la orden
- 
-     // Guarda la nueva orden en la base de datos
-     return await this.orderRepository.save(newOrder);
-   }    catch (error) {
-    console.error('error al crear la orden:', error.message);
-    throw error;
-   }
+          const newOrder = new Order();
+          newOrder.name = createOrderDto.name;
+          newOrder.priority = createOrderDto.priority;
+          newOrder.description = createOrderDto.description;
+          newOrder.description2 = createOrderDto.description2;
+          newOrder.isActive = createOrderDto.isActive;
+         // Asigna la relación entre la orden y el usuario
+          newOrder.user = user;  // Vincula el usuario a la orden
+    // Guarda la nueva orden en la base de datos
+          return await this.orderRepository.save(newOrder);
+          }    catch (error) {
+          console.error('error al crear la orden:', error.message);
+          throw error;
+          }
    }   // const newOrder = this.orderRepository.create(createOrderDto);
         // return await this.orderRepository.save(newOrder);
          
-   
-        /*create(CreateOrdersDto: CreateOrdersDto) {
-            // eslint-disable-next-line prefer-const
-            let nextId = this.orders[this.orders.length-1].id +1;
-            let order = new Order(nextId, CreateOrdersDto.name,*/ /*CreateOrdersDto.institute, CreateOrdersDto.contact,*//* CreateOrdersDto.priority, CreateOrdersDto.description);
-            this.orders.push(order);
-            return order;
-        }*/
-       async update(id: number, updateOrderDto: UpdateOrderDto): Promise<Order> {
+    async update(id: number, updateOrderDto: UpdateOrderDto): Promise<Order> {
          await this.orderRepository.update(id, updateOrderDto);
          return this.orderRepository.findOne({where:{id}});
-
-
        }
-        /*update(id: number, updateOrderDto: UpdateOrderDto): Order {
-            let order = this.findOne(id);
-            order.name = updateOrderDto.name;
-           // order.institute = updateOrderDto.institute;
-            //order.contact = updateOrderDto.contact;
-            order.priority = updateOrderDto.priority;
-            order.description = updateOrderDto.description;
-            return order;
-        }*/
-       async remove(id: number): Promise<void> { //"ESTEFUNCIONA"
+      
+    async remove(id: number): Promise<void> { //"ESTEFUNCIONA"
         await this.orderRepository.delete(id);
        }
-        /*remove(id: number) {
-            let order = this.findOne(id);
-            if(!order) 
-                throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-            let pos = this.orders.indexOf(order)
-            this.orders.splice(pos, 1);
-               
-          }*/
-    
-    }
-
+  }

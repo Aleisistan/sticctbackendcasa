@@ -8,7 +8,8 @@ export class CreateOrdersDto {
     "description": string;
     "isActive": boolean;
     "description2": string;
-   // user: null;
+    "user_name": string;  // Campo opcional si puede estar nulo
+    "user_mail": string; // Campo opcional si puede estar nulo/ user: null;
     
 }
 
