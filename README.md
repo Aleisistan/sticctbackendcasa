@@ -30,24 +30,21 @@ https://sti-cct-tandil.onrender.com
 Endpoints:
 ORDERS
 1. GET /orders
-	Returns all Orders with Users
+	Returns all Orders with Users id (ok)
 
-2. GET /orders/user/id
-        Returns Orders of an ID User
-
-3. GET /orders?orderField=priority&orderDirection=ASC //ACA DEBE QUEDAR ORDERS/PRIORITY
+2. GET /orders/id
+         Returns an Order by ID with User Description. (ok)
+   
+3. GET /orders?priority  //No puedo mostrar en orden por prioridad
 Returns Orders ordered by priority in ascendent mode.
 
-4. GET /orders/id
-         Returns an Order by ID with User.
-
-5. POST /orders
+4. POST /orders
 Creates a new Order. { userId, name, priority, description, description2, isActive}
 
-6. PUT /orders/id
+5. PUT /orders/id
 Updates an Order by ID. {name, priority, description, description2}
 
-7. DELETE /orders/id
+6. DELETE /orders/id
 Deletes an Order by ID.
 
 USERS
@@ -55,10 +52,10 @@ USERS
 1. GET /users 
 Returns all Users.
 
-2. GET /users/id  //ACA FALTA RELACIONAR CADA USER CON TODAS LAS ORDENES
+2. GET /users/id  //NO PUEDO mostrar USERS con sus repectivas ORDERS
 Returns an User by id.
 
-3. GET /users?orderField=institute&orderDirection=ASC  //ACA DEBE QUEDAR USERS/INSTITUTE
+3. GET /users?institute
 Returns all Users ordered by institute in ascedent mode
 
 4. POST /users
