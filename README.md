@@ -29,46 +29,37 @@ https://sti-cct-tandil.onrender.com
 
 Endpoints:
 ORDERS
-1. GET /orders
-	Returns all Orders with Users
+1. GET /orders   (OK)
+	Returns all Orders with Users id Ordered by Priority 
 
-2. GET /orders/user/id
-        Returns Orders of an ID User
+2. GET /orders/id   (OK)
+        Returns an Order by ID with User Description 
 
-3. GET /orders?orderField=priority&orderDirection=ASC 
-Returns Orders ordered by priority in ascendent mode.
+3. POST /orders   (OK)
+Creates a new Order. { userId, name, priority, description, description2, isActive} 
 
-4. GET /orders/id
-         Returns an Order by ID with User.
-
-5. POST /orders
-Creates a new Order. { userId, name, priority, description, description2, isActive}
-
-6. PUT /orders/id
+4. PUT /orders/id  (OK)
 Updates an Order by ID. {name, priority, description, description2}
 
-7. DELETE /orders/id
+5. DELETE /orders/id   (OK)
 Deletes an Order by ID.
 
 USERS
 
-1. GET /users 
-Returns all Users.
-
-2. GET /users/id
-Returns an User by id.
-
-3. GET /users?orderField=institute&orderDirection=ASC  
+1. GET /users  (OK)
 Returns all Users ordered by institute in ascedent mode
 
-4. POST /users
+2. GET /users/id  (OK)
+Returns an User by id with the number of orders and their respectives Orders
+
+3. POST /users   (OK)
 Creates a new User. { name, institute, mail, cel, isActive }
    
-5. PUT /users/id
+4. PUT /users/id  (OK)
 Updates an User by ID.{name, institute, mail, celphone}
 
-6. DELETE /users/id
- Deletes a user by ID.
+5. DELETE /users/id (NOT)
+ Deletes a user by ID. (I CAN´T DELETE USER WITHOUT ERROR FOREIGN KEYS)
 
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

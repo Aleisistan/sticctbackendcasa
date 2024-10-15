@@ -33,9 +33,12 @@ export class Order {
     @Column({ default: true })
     public isActive?: boolean;
     
-    @ManyToOne(() => User) //(user) => user.orders, { nullable:false})
+    @ManyToOne(() => User, { onDelete: 'SET NULL'}) //(user) => user.orders, { nullable:false})
     @JoinColumn({name:'id_user'})
     user: User;
+
+    @Column({ nullable: true})
+    public username: string;
    
     
    

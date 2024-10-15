@@ -15,7 +15,7 @@ export class Order {
     //user: {nullable:false};
     description2: string;
     isActive: boolean;
-    //User: import("e:/TUARI/1er Año/2do Cuatrimestre/Tecnologías Web/git/tecnologias-web/sticctbackendcasa/src/users/entities/user.entity").User;
+    username: string;//User: import("e:/TUARI/1er Año/2do Cuatrimestre/Tecnologías Web/git/tecnologias-web/sticctbackendcasa/src/users/entities/user.entity").User;
     //userId: import("e:/TUARI/1er Año/2do Cuatrimestre/Tecnologías Web/git/tecnologias-web/sticctbackendcasa/src/users/entities/user.entity").User;
     UserId: number;
 

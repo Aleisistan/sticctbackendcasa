@@ -12,54 +12,46 @@ export class OrdersController {
   orderRepository: any;
     constructor(private readonly ordersService: OrdersService) {}
 
-  /*@Get()
-  findAll(@Query() query : QueryOrdersDto) {
-       // eslint-disable-next-line prefer-const
-    let priority = query.priority;
-    let id = query.id;
-    let sortBy = query.sortBy;
-    let orderBy = query.orderBy;
-    return this.ordersService.findAll({});
-  }*/
-  @Get(':id')
-  findOne(@Param() params) {
-    let order = this.ordersService.findOne(params.id)
-    if(order){
-      return order;  
-    }  else {
-        throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-  }}
   @Get()
+    async getOrders(): Promise<Order[]> {
+      return this.ordersService.findAll();  // Obtener todas las órdenes ordenadas por prioridad
+      }
+    
+  @Get(':id')
+    async findOne(@Param('id') id: number) {
+      const order = await this.ordersService.findOne(id)
+      if(order){
+        return order;  
+      }  else {
+         throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      }}
+ 
+      //COMENTADO 15/10 17:20
+  /*@Get()
   async getOrders(): Promise<Order[]>{
     return this.ordersService.getOrdersWithUsers();
-  
-    
-    
-  }
-  
-  @Post()
- async create(@Body() CreateOrdersDto: CreateOrdersDto): Promise<Order>{
-  const result = await this.ordersService.create(CreateOrdersDto);
-    if ('error' in result) {
-        throw new BadRequestException(result.error);
-    }
-    return result; // Devolver el objeto de tipo Order.return this.ordersService.create(CreateOrdersDto);
-   
-    
-     
-  }
 
-  @Put(':id')
-  async update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto): Promise<Order>   {
-    return this.ordersService.update(id, updateOrderDto)
-   
-    
-  }
+    @Get(':priority')
+    async findOrdersByPriority(@Param('priority') priority: string) {
+      return this.ordersService.findOrdersByPriority(priority);
+    } */
+ 
+    @Post()
+      async create(@Body() CreateOrdersDto: CreateOrdersDto): Promise<Order>{
+        const result = await this.ordersService.create(CreateOrdersDto);
+          if ('error' in result) {
+            throw new BadRequestException(result.error);
+          }
+          return result; // Devolver el objeto de tipo Order.return this.ordersService.create(CreateOrdersDto);
+     }
+
+    @Put(':id')
+      async update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto): Promise<Order>   {
+        return this.ordersService.update(id, updateOrderDto)
+    }
  
   @Delete(':id') //"ESTE FUNCIONA"
-  remove(@Param('id') id: number): Promise<void> {
-    return this.ordersService.remove(id);
-    
-    
-  }
+    remove(@Param('id') id: number): Promise<void> {
+      return this.ordersService.remove(id);
+    }
 }
