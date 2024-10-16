@@ -10,6 +10,7 @@ import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
 import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
+  orderRepository: any;
     
     constructor(
         @InjectRepository(User)
@@ -79,46 +80,26 @@ export class UsersService {
             where: {id},
             relations: ['orders'],
         });
-    }        /*findOne(id: any) {
-    /*findOne(id: any) {
-        
-        //if(!id)
-          //  throw new HttpException('Not Found', HttpStatus.NOT_FOUND);// SE ME CIERRA LA APLICACION ERROR 500 INTERNAL SERVER ERROR
-            //throw new HttpException( 'ERROR DE SERVER 500', HttpStatus.INTERNAL_SERVER_ERROR);
-        return this.users.find(function(user){
-        return user.id == id;
-        });
-    }*/
+    }       
+
     async create(CreateUsersDto: CreateUsersDto): Promise<User> {
         const newUser = this.userRepository.create(CreateUsersDto);
         return await this.userRepository.save(newUser);
     }
-    /*
-    create(CreateUsersDto: CreateUsersDto) {
-        let nextId = this.users[this.users.length-1].id +1;
-        let user = new User(nextId, CreateUsersDto.name, CreateUsersDto.institute, CreateUsersDto.mail, CreateUsersDto.cel);
-        this.users.push(user);
-        return user;
-    }*/
+  
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
         await this.userRepository.update(id, updateUserDto);
         return this.userRepository.findOne({where:{id}});
     }
-   /*
-    update(id: number, updateUserDto: UpdateUserDto): User {
-        let user = this.findOne(id);
-        user.name = updateUserDto.name;
-        user.institute = updateUserDto.institute;
-        user.mail = updateUserDto.mail;
-        user.cel = updateUserDto.cel
-        return user;
-    }*/
+ 
     async remove(id: number): Promise<void> { //FUNCIONA ESTE
        const user = await this.userRepository.findOne({ where: { id: id}});
        if (!user) {
         throw new NotFoundException('user not found');
        }
        // Actualizar las órdenes para almacenar el nombre del usuario antes de eliminarlo
+    
+
     await this.ordersRepository.update(
       { user: user },  // Condición: solo las órdenes de este usuario
       { username: user.name }  // Guardamos el nombre del usuario en la columna userName

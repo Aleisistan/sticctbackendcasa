@@ -11,16 +11,6 @@ import { UsersService } from './users.service';
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    //COMENTADO 15/10 16:20
- /* @Get()
-  findAll(@Query() query: QueryUsersDto) {
-    // eslint-disable-next-line prefer-const
- let institute = query.institute;
- let id = query.id;
- let sortBy = query.sortBy;
- let orderBy = query.orderBy;
- return this.usersService.findAll({});
-}*/
   @Get()
     async getUser(): Promise<User[]> {
       return this.usersService.findAll();  // Obtener todos los usuarios ordenadas por instituto
@@ -34,7 +24,41 @@ export class UsersController {
         }  else {
             throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
         }}
-      /*async getUsersWithOrders(): Promise<User[]> {
+
+  @Post()
+    async create(@Body() CreateUsersDto: CreateUsersDto): Promise<User>{
+      await this.usersService.create(CreateUsersDto);
+      return;
+    }
+
+  @Put(':id')
+    update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<User>   {
+      this.usersService.update(id, updateUserDto);
+        return;
+ 
+}
+
+
+@Delete(':id') 
+//COMENTADO 16:10 14:30
+remove(@Param('id') id: number)  {
+  return this.usersService.remove(id);
+
+  }
+}
+
+
+    //COMENTADO 15/10 16:20
+ /* @Get()
+  findAll(@Query() query: QueryUsersDto) {
+    // eslint-disable-next-line prefer-const
+ let institute = query.institute;
+ let id = query.id;
+ let sortBy = query.sortBy;
+ let orderBy = query.orderBy;
+ return this.usersService.findAll({});
+}*/
+ /*async getUsersWithOrders(): Promise<User[]> {
           return this.usersService.getUsersWithOrders();
          }
    //COMENTADO 15/10
@@ -57,25 +81,3 @@ export class UsersController {
  /*async getAllUsersWithOrderCount() {
    return this.usersService.findAllUsersWithOrderCount();
  }*/
-
- 
-@Post()
-async create(@Body() CreateUsersDto: CreateUsersDto): Promise<User>{
-    await this.usersService.create(CreateUsersDto);
-    return;
-}
-
-@Put(':id')
-update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<User>   {
-  this.usersService.update(id, updateUserDto);
-  return;
- 
-}
-
-
-@Delete(':id') 
-remove(@Param('id') id: number)  {
-  return this.usersService.remove(id);
-  
-}
-}

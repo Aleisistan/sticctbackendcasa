@@ -15,11 +15,12 @@ export class Order {
     //user: {nullable:false};
     description2: string;
     isActive: boolean;
-    username: string;//User: import("e:/TUARI/1er Año/2do Cuatrimestre/Tecnologías Web/git/tecnologias-web/sticctbackendcasa/src/users/entities/user.entity").User;
+    username: string | null;//User: import("e:/TUARI/1er Año/2do Cuatrimestre/Tecnologías Web/git/tecnologias-web/sticctbackendcasa/src/users/entities/user.entity").User;
     //userId: import("e:/TUARI/1er Año/2do Cuatrimestre/Tecnologías Web/git/tecnologias-web/sticctbackendcasa/src/users/entities/user.entity").User;
-    UserId: number;
+    //UserId: string;
     user_name: string;  // Campo opcional si puede estar nulo
     user_mail: string; // Campo opcional si puede estar nulo
+    //userId: string;
     /*constructor(id: number, name:string,*/ /*institute: string, contact: string,*//* priority: string, description: string){
         this.id = id;
         this.name = name;

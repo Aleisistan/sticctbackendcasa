@@ -30,25 +30,7 @@ export class OrdersService {
           },
         });
       }
-      //COMENTADO 15/10 17:20
-    /*async findAll(filters: { priority?: string; id?: number; sortBy?: string; orderBy?: number },
-        orderField: string = 'priority', orderDirection: 'ASC' | 'DESC' = 'ASC'): Promise<Order[]> {
-            const whereConditions: any ={};
-        
-            if (filters.priority) {
-              whereConditions.priority = Like(`%${filters.priority}%`);
-            }
-        
-            if (filters.id) {
-              whereConditions.id = Like (`%${filters.id}%`);
-            }
-            return this.orderRepository.find({
-                where: whereConditions,
-                order: {
-                    [orderField]: orderDirection,
-                    },
-            });
-          }*/
+    
     async getOrdersWithUsers(): Promise<Order[]> {
             return await this.orderRepository.find({relations: ['user'], loadRelationIds:true 
             });
@@ -61,13 +43,7 @@ export class OrdersService {
             .where('user.id = :userId', { userId }) // Filtra por userId
             .getMany();
             }
-    async findOrdersByPriority(priority: string): Promise<Order[]> {
-          return this.orderRepository
-              .createQueryBuilder('order')
-              .where('LOWER(order.priority) LIKE LOWER(:priority)', { priority: `%${priority}%` }) // Filtro insensible a mayúsculas
-              .orderBy('order.priority', 'ASC')  // Ordenar por prioridad ascendente
-              .getMany();
-    }
+    
     findOne(id:any): Promise<Order> {
             return this.orderRepository.findOne({ where: {id}, relations:{user:true}});
         } 

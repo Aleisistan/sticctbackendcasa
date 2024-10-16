@@ -8,7 +8,7 @@ export class CreateOrdersDto {
     "description": string;
     "isActive": boolean;
     "description2": string;
-     "username": string;
+     //"username": string; COMENTADO 16/10 14:15
     
 }
 

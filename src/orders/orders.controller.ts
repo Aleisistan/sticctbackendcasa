@@ -16,7 +16,11 @@ export class OrdersController {
     async getOrders(): Promise<Order[]> {
       return this.ordersService.findAll();  // Obtener todas las órdenes ordenadas por prioridad
       }
-    
+      @Get()
+      async getOrdersWithUsers(): Promise<Order[]>{
+        return this.ordersService.getOrdersWithUsers();
+      }
+
   @Get(':id')
     async findOne(@Param('id') id: number) {
       const order = await this.ordersService.findOne(id)
@@ -25,13 +29,10 @@ export class OrdersController {
       }  else {
          throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
       }}
- 
-      //COMENTADO 15/10 17:20
-  /*@Get()
-  async getOrders(): Promise<Order[]>{
-    return this.ordersService.getOrdersWithUsers();
+     
+  /*
 
-    @Get(':priority')
+   /* @Get(':priority')
     async findOrdersByPriority(@Param('priority') priority: string) {
       return this.ordersService.findOrdersByPriority(priority);
     } */
