@@ -26,6 +26,7 @@ export class User {
     
     @OneToMany(() => Order, order => order.user)
     orders: Order[];
+    //username: string | null;
     //  @ManyToOne(() => User) //(user) => user.orders, { nullable:false})
     //@JoinColumn({name:'id_user'})
    // user: User;

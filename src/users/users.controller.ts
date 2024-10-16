@@ -57,7 +57,7 @@ export class UsersController {
  /*async getAllUsersWithOrderCount() {
    return this.usersService.findAllUsersWithOrderCount();
  }*/
- }*/
+
  
 @Post()
 async create(@Body() CreateUsersDto: CreateUsersDto): Promise<User>{

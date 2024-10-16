@@ -3,18 +3,20 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Order } from 'src/orders/entities/order.entity';
 import { Repository } from 'typeorm';
 import { CreateUsersDto } from './dto/create-users.dto/create-users.dto';
 import { UpdateUserDto } from './dto/create-users.dto/update-user.dto';
 import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
-    usersRepository: any;
-    ordersRepository: any;
+    
     constructor(
         @InjectRepository(User)
-        private userRepository: Repository<User>   //REVISAR OTRO POSTGRES EN PUERTO 5432
-    ) {
+        private userRepository: Repository<User>,
+        @InjectRepository(Order)
+        private ordersRepository: Repository<Order>,   //REVISAR OTRO POSTGRES EN PUERTO 5432
+      ) {
 
     }
     async findAll(): Promise<User[]> {
@@ -61,7 +63,7 @@ export class UsersService {
 
   // Método para obtener todos los usuarios con la cantidad de órdenes
   async findAllUsersWithOrderCount(): Promise<{ user: User; orderCount: number }[]> {
-    const users = await this.usersRepository.find({ relations: ['orders'] });
+    const users = await this.userRepository.find({ relations: ['orders'] });
 
     // Para cada usuario, contar sus órdenes
     return users.map(user => ({
@@ -117,13 +119,13 @@ export class UsersService {
         throw new NotFoundException('user not found');
        }
        // Actualizar las órdenes para almacenar el nombre del usuario antes de eliminarlo
-  await this.ordersRepository.update(
-    { user: user },  // Condición: solo las órdenes de este usuario
-    { userName: user.name }  // Guardamos el nombre del usuario en la columna userName
-    );
+    await this.ordersRepository.update(
+      { user: user },  // Condición: solo las órdenes de este usuario
+      { username: user.name }  // Guardamos el nombre del usuario en la columna userName
+      );
 
   // Eliminar el usuario
-  await this.usersRepository.delete(id);
+    await this.userRepository.delete(id);
     }
 }
    /*
