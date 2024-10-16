@@ -57,6 +57,7 @@ export class UsersController {
  /*async getAllUsersWithOrderCount() {
    return this.usersService.findAllUsersWithOrderCount();
  }*/
+ }*/
  
 @Post()
 async create(@Body() CreateUsersDto: CreateUsersDto): Promise<User>{
@@ -72,7 +73,7 @@ update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<Us
 }
 
 
-@Delete(':id') //FUNCIONA ESTE
+@Delete(':id') 
 remove(@Param('id') id: number)  {
   return this.usersService.remove(id);
   

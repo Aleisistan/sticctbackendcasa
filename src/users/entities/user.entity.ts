@@ -9,9 +9,6 @@ export class User {
     @PrimaryGeneratedColumn()
     public id:number;
 
-   // @Column()
-    //userId:number;
-
     @Column()
     public name: string;
 
@@ -27,7 +24,9 @@ export class User {
     @Column({ default: true })
     public  isActive: boolean;
     
-    @OneToMany(() => Order, (order) => order.user)
+    @OneToMany(() => Order, order => order.user)
     orders: Order[];
-    
+    //  @ManyToOne(() => User) //(user) => user.orders, { nullable:false})
+    //@JoinColumn({name:'id_user'})
+   // user: User;
 }
