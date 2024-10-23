@@ -97,13 +97,17 @@ export class UsersService {
        if (!user) {
         throw new NotFoundException('user not found');
        }
+       const userOrders = await this.ordersRepository.find({ where: { user: { id: user.id } } });
+       if (userOrders.length > 0) {
+         // Si el usuario tiene órdenes, lanzamos un error
+         throw new Error('No se puede eliminar el usuario porque tiene órdenes asociadas.');
        // Actualizar las órdenes para almacenar el nombre del usuario antes de eliminarlo
-    
+       }
 
-    await this.ordersRepository.update(
+    /*await this.ordersRepository.update(
       { user: user },  // Condición: solo las órdenes de este usuario
       { username: user.name }  // Guardamos el nombre del usuario en la columna userName
-      );
+      );*/
 
   // Eliminar el usuario
     await this.userRepository.delete(id);

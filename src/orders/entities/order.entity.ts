@@ -7,19 +7,9 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 export class Order {
     @PrimaryGeneratedColumn()
     public id:number;
-    
-    //@Column()
-    //public userId: number;
-    
+  
     @Column()
     public name: string;
-
-    
-   // @Column()
-    //private institute: string;//SACAR DE ACA
-    
-   // @Column()
-    //private contact: string;//id usuario
 
     @Column()
     public priority: string;
@@ -33,13 +23,11 @@ export class Order {
     @Column({ default: true })
     public isActive?: boolean;
     
-    @ManyToOne(() => User, { onDelete: 'SET NULL'}) //(user) => user.orders, { nullable:false})
+    @ManyToOne(() => User, (user) => user.orders, { nullable:true})
     @JoinColumn({name:'id_user'})
     user: User;
 
-    @Column({ nullable: true})
-    public username: string;
-   
-    
-   
+   @Column({ nullable: true})
+   public username: string;
+
 } 
