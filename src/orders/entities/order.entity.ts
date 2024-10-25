@@ -27,7 +27,7 @@ export class Order {
     @JoinColumn({name:'id_user'})
     user: User;
 
-   @Column({ nullable: true})
-   public username: string;
+   //@Column({ nullable: true})
+   //public username: string;
 
 } 
