@@ -5,4 +5,5 @@ export class UpdateOrderDto {
     //"mailcontact": string;
     "priority": string;
     "description": string;
+    "estado": string;
 }

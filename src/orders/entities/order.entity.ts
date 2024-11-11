@@ -20,6 +20,9 @@ export class Order {
     @Column()
     public description2: string;
 
+    @Column({ nullable: false, default:'En espera'})
+    public estado: string = 'En espera';
+
     @Column({ default: true })
     public isActive?: boolean;
     

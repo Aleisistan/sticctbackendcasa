@@ -16,7 +16,7 @@ export class OrdersService {
     throw new Error('Method not implemented.');
   }
   
-    constructor(
+    constructor( 
         @InjectRepository(Order)
         private readonly orderRepository: Repository<Order>,
         @InjectRepository(User)
@@ -66,6 +66,7 @@ export class OrdersService {
             newOrder.description = createOrderDto.description;
             newOrder.description2 = createOrderDto.description2;
             newOrder.isActive = createOrderDto.isActive;
+            newOrder.estado = createOrderDto.estado;
             // Asigna la relación entre la orden y el usuario
             newOrder.user = user;  // Vincula el usuario a la orden
            // Guarda la nueva orden en la base de datos

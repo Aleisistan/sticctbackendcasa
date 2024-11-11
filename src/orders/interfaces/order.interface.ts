@@ -17,5 +17,5 @@ export class Order {
     username: string | null;
     user_name: string;  // Campo opcional si puede estar nulo
     user_mail: string; // Campo opcional si puede estar nulo
-  
+    estado: string;
 }
