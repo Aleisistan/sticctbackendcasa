@@ -9,6 +9,6 @@ async function bootstrap() {
     methods: 'GET,POST,PUT,DELETE',                    // Métodos permitidos
     credentials: true                                  // Permitir el envío de cookies o autenticación
   });
-  await app.listen(3000);
+  //await app.listen(3000);
 }
 bootstrap();
