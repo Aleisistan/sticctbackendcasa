@@ -25,7 +25,8 @@
 
 ## Description
 API REST 
-https://sti-cct-tandil.onrender.com
+https://sticct-tandil.onrender.com
+
 
 Endpoints:
 ORDERS
